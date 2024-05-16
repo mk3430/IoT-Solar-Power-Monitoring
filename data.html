@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>INA219 Data</title>
+    <!-- Firebase JavaScript SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.7.0/firebase-database.js"></script>
+    <script>
+        // Initialize Firebase
+        var firebaseConfig = {
+            apiKey: "YOUR_API_KEY",
+            authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+            databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+            projectId: "YOUR_PROJECT_ID",
+            storageBucket: "YOUR_PROJECT_ID.appspot.com",
+            messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+            appId: "YOUR_APP_ID",
+            measurementId: "YOUR_MEASUREMENT_ID"
+        };
+        firebase.initializeApp(firebaseConfig);
+
+        // Reference to the Firebase database
+        var database = firebase.database();
+
+        // Function to listen for changes in the Firebase database and update the webpage accordingly
+        function getData() {
+            var ref = database.ref('/');
+            ref.on('value', function(snapshot) {
+                var data = snapshot.val();
+                document.getElementById('loadVoltage').innerText = 'Load Voltage: ' + data.LoadVoltage + ' V';
+                document.getElementById('current').innerText = 'Current: ' + data.Current + ' mA';
+                document.getElementById('power').innerText = 'Power: ' + data.Power + ' mW';
+            });
+        }
+
+        // Call the function to get data when the page loads
+        window.onload = getData;
+    </script>
+</head>
+<body>
+    <h1>INA219 Data</h1>
+    <p id="loadVoltage">Load Voltage: </p>
+    <p id="current">Current: </p>
+    <p id="power">Power: </p>
+</body>
+</html>
